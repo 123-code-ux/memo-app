@@ -1,34 +1,49 @@
-const dinos = [
-  { name: 'ティラノサウルス', size: 12, img: 'tyrannosaurus.jpg' },
-  { name: 'スピノサウルス', size: 18, img: 'spinosaurus.jpg' },
-  { name: 'トリケラトプス', size: 9, img: 'triceratops.jpg' },
-];
+const memoList = document.getElementById('memo-list');
+const memoForm = document.getElementById('memo-form');
+const memoInput = document.getElementById('memo-input');
 
-let left, right;
+// メモ取得
+async function loadMemos() {
+  const res = await fetch('/api/memos');
+  const memos = await res.json();
 
-function randomDinos() {
-  const a = dinos[Math.floor(Math.random() * dinos.length)];
-  let b;
-  do { b = dinos[Math.floor(Math.random() * dinos.length)]; } while (b === a);
-  left = a;
-  right = b;
+  memoList.innerHTML = '';
 
-  document.getElementById('dino1').src = `images/${left.img}`;
-  document.getElementById('dino2').src = `images/${right.img}`;
-  document.getElementById('result').textContent = '';
+  memos.forEach(memo => {
+    const li = document.createElement('li');
+    li.className = 'memo-item';
+
+    const date = memo.created_at
+      ? new Date(memo.created_at).toLocaleString()
+      : '';
+
+    li.innerHTML = `
+      <div class="memo-content">${memo.content}</div>
+      <div class="memo-date">${date}</div>
+    `;
+
+    memoList.appendChild(li);
+  });
 }
 
-function answer(side) {
-  let correct = left.size > right.size ? 'left' : 'right';
-  if (side === correct) {
-    document.getElementById('result').textContent = `正解！🎉 ${side === 'left' ? left.name : right.name} が大きい！`;
-  } else {
-    document.getElementById('result').textContent = `残念！😢 ${side === 'left' ? right.name : left.name} が大きい！`;
-  }
-}
+// メモ送信
+memoForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
 
-function nextQuiz() {
-  randomDinos();
-}
+  const content = memoInput.value.trim();
+  if (!content) return;
 
-randomDinos();
+  await fetch('/api/memos', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ content })
+  });
+
+  memoInput.value = '';
+  loadMemos(); // 即時反映
+});
+
+// 初期表示
+loadMemos();

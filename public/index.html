@@ -1,35 +1,19 @@
-<input id="name" placeholder="名前（例：母）">
-<input id="content" placeholder="伝言を書く">
-<button onclick="addMemo()">投稿</button>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>家族共有メモ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>家族共有メモ</h1>
+  <p class="subtitle">帰省中の連絡・伝言・買い物メモ</p>
 
-<ul id="list"></ul>
+  <textarea id="memoInput" placeholder="例：冷蔵庫にケーキあります"></textarea>
+  <button onclick="addMemo()">追加</button>
 
-<script>
-async function loadMemos() {
-  const res = await fetch('/api/memos');
-  const memos = await res.json();
-  const list = document.getElementById('list');
-  list.innerHTML = '';
-  memos.forEach(m => {
-    const li = document.createElement('li');
-    li.textContent = `${m.created_at}｜${m.name}：${m.content}`;
-    list.appendChild(li);
-  });
-}
+  <ul id="memoList"></ul>
 
-async function addMemo() {
-  const name = document.getElementById('name').value;
-  const content = document.getElementById('content').value;
-
-  await fetch('/api/memos', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, content })
-  });
-
-  document.getElementById('content').value = '';
-  loadMemos();
-}
-
-loadMemos();
-</script>
+  <script src="script.js"></script>
+</body>
+</html>
