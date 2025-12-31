@@ -6,11 +6,14 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>家族共有メモ</h1>
-  <p class="subtitle">帰省中の連絡・伝言・買い物メモ</p>
+  <h1>🏠 家族共有メモ</h1>
+  <p class="subtitle">帰省中の伝言・連絡・買い物メモ</p>
 
-  <textarea id="memoInput" placeholder="例：冷蔵庫にケーキあります"></textarea>
-  <button onclick="addMemo()">追加</button>
+  <div class="input-area">
+    <input id="authorInput" placeholder="名前（例：父・母・兄）">
+    <textarea id="memoInput" placeholder="例：冷蔵庫にケーキあります"></textarea>
+    <button id="addBtn">追加</button>
+  </div>
 
   <ul id="memoList"></ul>
 

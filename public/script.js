@@ -1,49 +1,39 @@
-const memoList = document.getElementById('memo-list');
-const memoForm = document.getElementById('memo-form');
-const memoInput = document.getElementById('memo-input');
-
-// メモ取得
 async function loadMemos() {
   const res = await fetch('/api/memos');
   const memos = await res.json();
 
-  memoList.innerHTML = '';
+  const list = document.getElementById('memoList');
+  list.innerHTML = '';
 
   memos.forEach(memo => {
     const li = document.createElement('li');
-    li.className = 'memo-item';
-
-    const date = memo.created_at
-      ? new Date(memo.created_at).toLocaleString()
-      : '';
-
     li.innerHTML = `
-      <div class="memo-content">${memo.content}</div>
-      <div class="memo-date">${date}</div>
+      <div class="memo-header">
+        <span class="author">${memo.author}</span>
+        <span class="date">${memo.created_at}</span>
+      </div>
+      <div class="content">${memo.content}</div>
     `;
-
-    memoList.appendChild(li);
+    list.appendChild(li);
   });
 }
 
-// メモ送信
-memoForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
+async function addMemo() {
+  const author = document.getElementById('authorInput').value || '匿名';
+  const content = document.getElementById('memoInput').value;
 
-  const content = memoInput.value.trim();
-  if (!content) return;
+  if (!content.trim()) return;
 
   await fetch('/api/memos', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ content })
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ author, content })
   });
 
-  memoInput.value = '';
-  loadMemos(); // 即時反映
-});
+  document.getElementById('memoInput').value = '';
+  loadMemos();
+}
 
-// 初期表示
+document.getElementById('addBtn').addEventListener('click', addMemo);
+
 loadMemos();
