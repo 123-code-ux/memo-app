@@ -1,42 +1,19 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <title>メモ</title>
+  <meta charset="UTF-8">
+  <title>恐竜クイズ</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>メモ</h1>
-
-  <textarea id="memo" rows="4" cols="40"></textarea><br>
-  <button onclick="saveMemo()">保存</button>
-
-  <ul id="list"></ul>
-
-  <script>
-    async function loadMemos() {
-      const res = await fetch('/api/memos');
-      const memos = await res.json();
-      const list = document.getElementById('list');
-      list.innerHTML = '';
-      memos.forEach(m => {
-        const li = document.createElement('li');
-        li.textContent = m.content;
-        list.appendChild(li);
-      });
-    }
-
-    async function saveMemo() {
-      const content = document.getElementById('memo').value;
-      await fetch('/api/memos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content })
-      });
-      document.getElementById('memo').value = '';
-      loadMemos();
-    }
-
-    loadMemos();
-  </script>
+  <h1>どっちの恐竜が大きい？🦖</h1>
+  <div id="quiz">
+    <img id="dino1" onclick="answer('left')">
+    <img id="dino2" onclick="answer('right')">
+  </div>
+  <p id="result"></p>
+  <button onclick="nextQuiz()">次のクイズ</button>
+  <script src="script.js"></script>
 </body>
 </html>
+
