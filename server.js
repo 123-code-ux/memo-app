@@ -1,40 +1,44 @@
 const express = require('express');
-const fs = require('fs');
-const path = require('path');
+const sqlite3 = require('sqlite3').verbose();
 
 const app = express();
 app.use(express.json());
 app.use(express.static('public'));
 
-const DATA_FILE = path.join(__dirname, 'memos.json');
+const db = new sqlite3.Database('./memo.db');
 
-// 初期化
-if (!fs.existsSync(DATA_FILE)) {
-  fs.writeFileSync(DATA_FILE, JSON.stringify([]));
-}
+// テーブル作成（家族掲示板）
+db.serialize(() => {
+  db.run(`
+    CREATE TABLE IF NOT EXISTS memos (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT,
+      content TEXT,
+      created_at TEXT
+    )
+  `);
+});
 
 // メモ取得
 app.get('/api/memos', (req, res) => {
-  const data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
-  res.json(data.reverse());
+  db.all(
+    'SELECT * FROM memos ORDER BY id DESC',
+    (err, rows) => res.json(rows)
+  );
 });
 
-// メモ保存（日時つき）
+// メモ保存
 app.post('/api/memos', (req, res) => {
-  const { content } = req.body;
-  const data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+  const { name, content } = req.body;
+  const createdAt = new Date().toLocaleString('ja-JP');
 
-  data.push({
-    content,
-    date: new Date().toLocaleString()
-  });
-
-  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
-  res.json({ status: 'ok' });
+  db.run(
+    'INSERT INTO memos (name, content, created_at) VALUES (?, ?, ?)',
+    [name, content, createdAt],
+    () => res.json({ status: 'ok' })
+  );
 });
 
-// Render用
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log('Server started on port', PORT);
+app.listen(3000, () => {
+  console.log('Server running');
 });

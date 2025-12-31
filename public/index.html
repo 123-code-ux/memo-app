@@ -1,19 +1,35 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <title>恐竜クイズ</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <h1>どっちの恐竜が大きい？🦖</h1>
-  <div id="quiz">
-    <img id="dino1" onclick="answer('left')">
-    <img id="dino2" onclick="answer('right')">
-  </div>
-  <p id="result"></p>
-  <button onclick="nextQuiz()">次のクイズ</button>
-  <script src="script.js"></script>
-</body>
-</html>
+<input id="name" placeholder="名前（例：母）">
+<input id="content" placeholder="伝言を書く">
+<button onclick="addMemo()">投稿</button>
 
+<ul id="list"></ul>
+
+<script>
+async function loadMemos() {
+  const res = await fetch('/api/memos');
+  const memos = await res.json();
+  const list = document.getElementById('list');
+  list.innerHTML = '';
+  memos.forEach(m => {
+    const li = document.createElement('li');
+    li.textContent = `${m.created_at}｜${m.name}：${m.content}`;
+    list.appendChild(li);
+  });
+}
+
+async function addMemo() {
+  const name = document.getElementById('name').value;
+  const content = document.getElementById('content').value;
+
+  await fetch('/api/memos', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, content })
+  });
+
+  document.getElementById('content').value = '';
+  loadMemos();
+}
+
+loadMemos();
+</script>
