@@ -1,62 +1,40 @@
 const express = require('express');
-const sqlite3 = require('sqlite3').verbose();
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
 app.use(express.json());
 app.use(express.static('public'));
 
-const db = new sqlite3.Database('./memo.db');
+const DATA_FILE = path.join(__dirname, 'memos.json');
 
-// テーブル作成（content + date）
-db.serialize(() => {
-  db.run(`
-    CREATE TABLE IF NOT EXISTS memos (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      content TEXT,
-      date TEXT
-    )
-  `);
-});
+// 初期化
+if (!fs.existsSync(DATA_FILE)) {
+  fs.writeFileSync(DATA_FILE, JSON.stringify([]));
+}
 
-// メモ取得（最新順）
+// メモ取得
 app.get('/api/memos', (req, res) => {
-  db.all('SELECT * FROM memos ORDER BY id DESC', (err, rows) => {
-    if (err) {
-      console.error(err.message);
-      return res.status(500).json({ status: 'error' });
-    }
-    res.json(rows);
-  });
+  const data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+  res.json(data.reverse());
 });
 
-// メモ保存（内容 + 日付）
+// メモ保存（日時つき）
 app.post('/api/memos', (req, res) => {
   const { content } = req.body;
-  const date = new Date().toLocaleString(); // 日付を追加
-  db.run(
-    'INSERT INTO memos (content, date) VALUES (?, ?)',
-    [content, date],
-    (err) => {
-      if (err) {
-        console.error(err.message);
-        return res.status(500).json({ status: 'error' });
-      }
-      res.json({ status: 'ok' });
-    }
-  );
-});
+  const data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
 
-// メモ全削除
-app.delete('/api/memos', (req, res) => {
-  db.run('DELETE FROM memos', (err) => {
-    if (err) {
-      console.error(err.message);
-      return res.status(500).json({ status: 'error' });
-    }
-    res.json({ status: 'ok' });
+  data.push({
+    content,
+    date: new Date().toLocaleString()
   });
+
+  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
+  res.json({ status: 'ok' });
 });
 
-app.listen(3000, () => {
-  console.log('http://localhost:3000');
+// Render用
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log('Server started on port', PORT);
 });
