@@ -7,25 +7,31 @@ async function loadMemos() {
 
   memos.forEach(memo => {
     const li = document.createElement('li');
-    li.textContent = memo.content;
+    li.textContent = `${memo.name}：${memo.content}`;
     list.appendChild(li);
   });
 }
 
 async function addMemo() {
-  const input = document.getElementById('memoInput');
-  const content = input.value.trim();
-  if (!content) return;
+  const content = document.getElementById('memoInput').value;
+  const nameInput = document.getElementById('nameInput');
+  const name = nameInput ? nameInput.value : '';
+
+  if (!content) {
+    alert('メモを入力してください');
+    return;
+  }
 
   await fetch('/api/memos', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ content })
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ name, content })
   });
 
-  input.value = '';
+  document.getElementById('memoInput').value = '';
   loadMemos();
 }
 
-// 初回読み込み
 loadMemos();
