@@ -1,4 +1,3 @@
-// メモを読み込んで表示
 async function loadMemos() {
   const res = await fetch('/api/memos');
   const memos = await res.json();
@@ -9,7 +8,7 @@ async function loadMemos() {
   memos.forEach((memo, i) => {
     const li = document.createElement('li');
     li.className = 'memo-item';
-    li.style.opacity = memo.done ? '0.6' : '1'; // 完了メモは薄く表示
+    li.style.opacity = memo.done ? '0.6' : '1';
 
     const date = new Date(memo.createdAt);
     const dateStr = !isNaN(date) ? date.toLocaleString('ja-JP') : '';
@@ -26,7 +25,6 @@ async function loadMemos() {
   });
 }
 
-// メモ追加
 async function addMemo() {
   const content = document.getElementById('memoInput').value.trim();
   const name = document.getElementById('nameInput').value.trim();
@@ -42,7 +40,6 @@ async function addMemo() {
   loadMemos();
 }
 
-// 完了状態切替
 async function toggleDone(index) {
   const user = document.getElementById('nameInput').value.trim() || '匿名';
   await fetch('/api/memos/done', {
@@ -53,8 +50,5 @@ async function toggleDone(index) {
   loadMemos();
 }
 
-// ボタンにイベント登録
 document.getElementById('addBtn').addEventListener('click', addMemo);
-
-// 初回ロード
 loadMemos();

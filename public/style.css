@@ -74,7 +74,7 @@ ul {
   padding: 10px;
   border-radius: 8px;
   display: flex;
-  align-items: flex-start; /* チェックボックス上寄せ */
+  align-items: flex-start; /* 上寄せ */
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   word-break: break-word;   /* 長文折り返し */
   word-wrap: break-word;
@@ -86,14 +86,12 @@ ul {
   flex-shrink: 0;
 }
 
-/* メモ内容 */
 .memo-content {
   flex: 1;
-  min-width: 0;             /* 横幅オーバー防止 */
+  min-width: 0;             /* 幅超過防止 */
   word-break: break-word;
 }
 
-/* 日付 */
 .memo-date {
   display: block;
   font-size: 0.75rem;
@@ -101,7 +99,6 @@ ul {
   margin-top: 4px;
 }
 
-/* 完了表示 */
 .done-by {
   display: block;
   font-size: 0.75rem;
