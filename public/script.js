@@ -7,7 +7,15 @@ async function loadMemos() {
 
   memos.forEach(memo => {
     const li = document.createElement('li');
-    li.innerHTML = `${memo.name}：${memo.content}`;
+    const date = new Date(memo.date).toLocaleString('ja-JP', {
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+    li.innerHTML = `<span class="memo-name">${memo.name}</span>
+                    <span class="memo-date">${date}</span>
+                    <p class="memo-content">${memo.content}</p>`;
     list.appendChild(li);
   });
 }
@@ -26,7 +34,8 @@ async function addMemo() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       name: name || '匿名',
-      content
+      content,
+      date: new Date().toISOString()
     })
   });
 
