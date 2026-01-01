@@ -10,17 +10,37 @@ async function loadMemos() {
     li.className = 'memo-item';
     li.style.opacity = memo.done ? '0.6' : '1';
 
-    const date = new Date(memo.createdAt);
-    const dateStr = !isNaN(date) ? date.toLocaleString('ja-JP') : '';
+    // チェックボックス
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = memo.done;
+    checkbox.addEventListener('change', () => toggleDone(i));
+    li.appendChild(checkbox);
 
-    li.innerHTML = `
-      <input type="checkbox" ${memo.done ? 'checked' : ''} onchange="toggleDone(${i})">
-      <div class="memo-content">
-        <strong>${memo.name}</strong>：${memo.content}
-        <span class="memo-date">${dateStr}</span>
-        ${memo.done ? `<span class="done-by">(完了 by ${memo.doneBy})</span>` : ''}
-      </div>
-    `;
+    // 内容 div
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'memo-content';
+
+    const nameStrong = document.createElement('strong');
+    nameStrong.textContent = memo.name;
+    contentDiv.appendChild(nameStrong);
+
+    contentDiv.appendChild(document.createTextNode('：' + memo.content));
+
+    const dateSpan = document.createElement('span');
+    dateSpan.className = 'memo-date';
+    const date = new Date(memo.createdAt);
+    dateSpan.textContent = !isNaN(date) ? date.toLocaleString('ja-JP') : '';
+    contentDiv.appendChild(dateSpan);
+
+    if (memo.done) {
+      const doneBySpan = document.createElement('span');
+      doneBySpan.className = 'done-by';
+      doneBySpan.textContent = `(完了 by ${memo.doneBy})`;
+      contentDiv.appendChild(doneBySpan);
+    }
+
+    li.appendChild(contentDiv);
     list.appendChild(li);
   });
 }
@@ -52,3 +72,4 @@ async function toggleDone(index) {
 
 document.getElementById('addBtn').addEventListener('click', addMemo);
 loadMemos();
+
