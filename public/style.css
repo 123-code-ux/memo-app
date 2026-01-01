@@ -68,6 +68,13 @@ button {
 
 .done-by { font-size: 0.75rem; color: green; display: block; }
 
+.memo-content button {
+  margin-top: 4px;
+  padding: 2px 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
 /* スマホ用微調整 */
 @media (max-width: 360px) {
   .container {

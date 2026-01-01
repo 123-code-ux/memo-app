@@ -1,41 +1,40 @@
 async function loadMemos() {
   const res = await fetch('/api/memos');
   const memos = await res.json();
+
   const list = document.getElementById('memoList');
   list.innerHTML = '';
 
   memos.forEach((memo, i) => {
+    const date = new Date(memo.createdAt);
+    const dateStr = !isNaN(date) ? date.toLocaleString('ja-JP') : '';
+
     const div = document.createElement('div');
     div.className = 'memo-row';
-
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.checked = memo.done;
-    checkbox.addEventListener('change', () => toggleDone(i));
-    div.appendChild(checkbox);
-
-    const contentDiv = document.createElement('div');
-    contentDiv.className = 'memo-content';
-
-    contentDiv.innerHTML = `<span class="memo-name">${memo.name}</span>：${memo.content}
-      <span class="memo-date">${new Date(memo.createdAt).toLocaleString('ja-JP')}</span>
-      ${memo.done ? `<span class="done-by">(完了 by ${memo.doneBy})</span>` : ''}`;
-
-    div.appendChild(contentDiv);
+    div.innerHTML = `
+      <input type="checkbox" ${memo.done ? 'checked' : ''} onchange="toggleDone(${i})">
+      <div class="memo-content">
+        <span class="memo-name">${memo.name}</span>：${memo.content}
+        <span class="memo-date">${dateStr}</span>
+        ${memo.done ? `<span class="done-by">(完了 by ${memo.doneBy})</span>` : ''}
+        <button onclick="addReaction(${i})">👍 ${memo.reactions || 0}</button>
+      </div>
+    `;
     list.appendChild(div);
   });
 }
 
 async function addMemo() {
-  const name = document.getElementById('nameInput').value.trim() || '匿名';
   const content = document.getElementById('memoInput').value.trim();
+  const name = document.getElementById('nameInput').value.trim();
   if (!content) return alert('メモを入力してください');
 
   await fetch('/api/memos', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, content })
+    body: JSON.stringify({ name: name || '匿名', content })
   });
+
   document.getElementById('memoInput').value = '';
   loadMemos();
 }
@@ -46,6 +45,15 @@ async function toggleDone(index) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ index, user })
+  });
+  loadMemos();
+}
+
+async function addReaction(index) {
+  await fetch('/api/memos/react', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ index })
   });
   loadMemos();
 }
