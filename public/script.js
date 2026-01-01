@@ -1,39 +1,40 @@
-async function loadMemos() {
-  const res = await fetch('/api/memos');
-  const memos = await res.json();
+const express = require("express");
+const sqlite3 = require("sqlite3").verbose();
 
-  const list = document.getElementById('memoList');
-  list.innerHTML = '';
+const app = express();
+app.use(express.json());
+app.use(express.static("public"));
 
-  memos.forEach(memo => {
-    const li = document.createElement('li');
-    li.innerHTML = `
-      <div class="memo-header">
-        <span class="author">${memo.author}</span>
-        <span class="date">${memo.created_at}</span>
-      </div>
-      <div class="content">${memo.content}</div>
-    `;
-    list.appendChild(li);
+const db = new sqlite3.Database("./memo.db");
+
+// テーブル作成
+db.serialize(() => {
+  db.run(`
+    CREATE TABLE IF NOT EXISTS memos (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      content TEXT
+    )
+  `);
+});
+
+// メモ取得
+app.get("/api/memos", (req, res) => {
+  db.all("SELECT * FROM memos ORDER BY id DESC", (err, rows) => {
+    res.json(rows);
   });
-}
+});
 
-async function addMemo() {
-  const author = document.getElementById('authorInput').value || '匿名';
-  const content = document.getElementById('memoInput').value;
+// メモ追加
+app.post("/api/memos", (req, res) => {
+  const { content } = req.body;
+  db.run(
+    "INSERT INTO memos (content) VALUES (?)",
+    [content],
+    () => res.json({ status: "ok" })
+  );
+});
 
-  if (!content.trim()) return;
-
-  await fetch('/api/memos', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ author, content })
-  });
-
-  document.getElementById('memoInput').value = '';
-  loadMemos();
-}
-
-document.getElementById('addBtn').addEventListener('click', addMemo);
-
-loadMemos();
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log("Server running on port", PORT);
+});
