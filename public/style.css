@@ -1,5 +1,5 @@
 body {
-  font-family: Helvetica, sans-serif;
+  font-family: 'Helvetica', sans-serif;
   background-color: #fef6e4;
   margin: 0;
   padding: 0;
@@ -9,94 +9,45 @@ body {
   max-width: 480px;
   margin: auto;
   padding: 16px;
-  box-sizing: border-box;
-  overflow-x: hidden;
 }
 
-h1 {
-  text-align: center;
-  color: #ff7f50;
-}
-
-.subtitle {
-  text-align: center;
-  font-size: 0.9rem;
-  margin-bottom: 16px;
-  color: #666;
-}
-
-input, textarea {
+input, textarea, button {
   width: 100%;
-  box-sizing: border-box;
   margin-bottom: 8px;
   padding: 8px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+  box-sizing: border-box;
 }
 
-textarea {
-  resize: vertical;
-  min-height: 60px;
-}
+textarea { min-height: 60px; }
 
-button {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
-  background: #ff7f50;
-  color: white;
-  font-size: 1rem;
-  cursor: pointer;
-}
+button { cursor: pointer; background-color: #ff7f50; color: #fff; border: none; border-radius: 6px; }
 
-ul {
-  list-style: none;
-  padding: 0;
+#memoList {
   margin-top: 16px;
-  box-sizing: border-box;
-  overflow-x: hidden;
 }
 
-.memo-item {
-  display: flex;
-  align-items: flex-start;
-  background: #fff8f0;
-  padding: 10px;
+.memo-row {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  padding: 8px;
+  background: #fff;
   margin-bottom: 8px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  flex: 1 1 auto;
-  max-width: 100%;
-  box-sizing: border-box;
+  border-radius: 6px;
   word-break: break-word;
-  overflow-wrap: break-word;
 }
 
-.memo-item input[type="checkbox"] {
-  align-self: flex-start;
-  margin-right: 8px;
-  flex-shrink: 0;
+.memo-row input[type="checkbox"] {
+  margin: 0;
+  justify-self: center;
+  align-self: start;
 }
 
 .memo-content {
-  flex: 1 1 auto;
-  min-width: 0;
-  word-break: break-word;
-  overflow-wrap: break-word;
+  white-space: normal;
 }
 
-.memo-date {
-  display: block;
-  font-size: 0.75rem;
-  color: #999;
-  margin-top: 4px;
-}
+.memo-name { font-weight: bold; }
 
-.done-by {
-  display: block;
-  font-size: 0.75rem;
-  color: #00a000;
-  font-weight: bold;
-  margin-top: 2px;
-}
+.memo-date { font-size: 0.75rem; color: #999; display: block; }
+
+.done-by { font-size: 0.75rem; color: green; display: block; }

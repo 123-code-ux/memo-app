@@ -1,61 +1,41 @@
 async function loadMemos() {
   const res = await fetch('/api/memos');
   const memos = await res.json();
-
   const list = document.getElementById('memoList');
   list.innerHTML = '';
 
   memos.forEach((memo, i) => {
-    const li = document.createElement('li');
-    li.className = 'memo-item';
-    li.style.opacity = memo.done ? '0.6' : '1';
+    const div = document.createElement('div');
+    div.className = 'memo-row';
 
-    // チェックボックス
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.checked = memo.done;
     checkbox.addEventListener('change', () => toggleDone(i));
-    li.appendChild(checkbox);
+    div.appendChild(checkbox);
 
-    // 内容 div
     const contentDiv = document.createElement('div');
     contentDiv.className = 'memo-content';
 
-    const nameStrong = document.createElement('strong');
-    nameStrong.textContent = memo.name;
-    contentDiv.appendChild(nameStrong);
+    contentDiv.innerHTML = `<span class="memo-name">${memo.name}</span>：${memo.content}
+      <span class="memo-date">${new Date(memo.createdAt).toLocaleString('ja-JP')}</span>
+      ${memo.done ? `<span class="done-by">(完了 by ${memo.doneBy})</span>` : ''}`;
 
-    contentDiv.appendChild(document.createTextNode('：' + memo.content));
-
-    const dateSpan = document.createElement('span');
-    dateSpan.className = 'memo-date';
-    const date = new Date(memo.createdAt);
-    dateSpan.textContent = !isNaN(date) ? date.toLocaleString('ja-JP') : '';
-    contentDiv.appendChild(dateSpan);
-
-    if (memo.done) {
-      const doneBySpan = document.createElement('span');
-      doneBySpan.className = 'done-by';
-      doneBySpan.textContent = `(完了 by ${memo.doneBy})`;
-      contentDiv.appendChild(doneBySpan);
-    }
-
-    li.appendChild(contentDiv);
-    list.appendChild(li);
+    div.appendChild(contentDiv);
+    list.appendChild(div);
   });
 }
 
 async function addMemo() {
+  const name = document.getElementById('nameInput').value.trim() || '匿名';
   const content = document.getElementById('memoInput').value.trim();
-  const name = document.getElementById('nameInput').value.trim();
   if (!content) return alert('メモを入力してください');
 
   await fetch('/api/memos', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name: name || '匿名', content })
+    body: JSON.stringify({ name, content })
   });
-
   document.getElementById('memoInput').value = '';
   loadMemos();
 }
@@ -72,4 +52,3 @@ async function toggleDone(index) {
 
 document.getElementById('addBtn').addEventListener('click', addMemo);
 loadMemos();
-
