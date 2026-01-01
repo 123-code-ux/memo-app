@@ -15,11 +15,11 @@ async function loadMemos() {
 
     li.innerHTML = `
       <input type="checkbox" ${memo.done ? 'checked' : ''} onchange="toggleDone(${i})">
-      <span class="memo-content">
+      <div class="memo-content">
         <strong>${memo.name}</strong>：${memo.content}
         <span class="memo-date">${dateStr}</span>
         ${memo.done ? `<span class="done-by">(完了 by ${memo.doneBy})</span>` : ''}
-      </span>
+      </div>
     `;
     list.appendChild(li);
   });
