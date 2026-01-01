@@ -27,9 +27,7 @@ h1 {
   color: #666;
 }
 
-/* ================================
-   入力欄
-================================ */
+/* 入力欄 */
 input, textarea {
   width: 100%;
   margin-bottom: 8px;
@@ -45,9 +43,7 @@ textarea {
   min-height: 60px;
 }
 
-/* ================================
-   ボタン
-================================ */
+/* ボタン */
 button {
   width: 100%;
   padding: 10px;
@@ -64,49 +60,39 @@ button:hover {
   background-color: #ff6347;
 }
 
-/* ================================
-   メモリスト
-================================ */
+/* メモリスト */
 ul {
   list-style: none;
   padding: 0;
   margin-top: 16px;
 }
 
-/* ================================
-   メモ1件
-================================ */
+/* メモ1件 */
 .memo-item {
   background: #fff8f0;
   margin-bottom: 8px;
   padding: 10px;
   border-radius: 8px;
   display: flex;
-  align-items: flex-start;
+  align-items: flex-start;  /* 上寄せ */
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  word-break: break-word;
-  word-wrap: break-word;
+  word-break: break-word;    /* 長文折り返し */
 }
 
 .memo-item input[type="checkbox"] {
   margin-right: 8px;
-  margin-top: 0;
+  margin-top: 4px;           /* 上寄せ */
   flex-shrink: 0;
-  align-self: center;
 }
 
-/* ================================
-   メモ内容
-================================ */
+/* メモ内容 */
 .memo-content {
-  flex: 1 1 auto;
-  min-width: 0;
-  display: block;
+  flex: 1;
+  min-width: 0;              /* 横幅オーバー防止 */
   word-break: break-word;
-  overflow-wrap: break-word;
 }
 
-/* 日付表示 */
+/* 日付 */
 .memo-date {
   display: block;
   font-size: 0.75rem;
@@ -114,18 +100,7 @@ ul {
   margin-top: 4px;
 }
 
-/* 完了表示 */
-.done-by {
-  display: block;
-  font-size: 0.75rem;
-  color: #00a000;
-  font-weight: bold;
-  margin-top: 2px;
-}
-
-/* ================================
-   スマホ対応
-================================ */
+/* スマホ対応 */
 @media (max-width: 480px) {
   .container {
     padding: 12px;
@@ -136,7 +111,7 @@ ul {
     padding: 8px;
   }
 
-  .memo-date, .done-by {
+  .memo-date {
     font-size: 0.7rem;
   }
 }
