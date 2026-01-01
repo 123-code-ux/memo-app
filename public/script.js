@@ -13,9 +13,8 @@ async function loadMemos() {
 }
 
 async function addMemo() {
-  const content = document.getElementById('memoInput').value;
-  const nameInput = document.getElementById('nameInput');
-  const name = nameInput ? nameInput.value : '';
+  const content = document.getElementById('memoInput').value.trim();
+  const name = document.getElementById('nameInput').value.trim();
 
   if (!content) {
     alert('メモを入力してください');
@@ -24,14 +23,17 @@ async function addMemo() {
 
   await fetch('/api/memos', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ name, content })
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: name || '匿名',
+      content
+    })
   });
 
   document.getElementById('memoInput').value = '';
   loadMemos();
 }
+
+document.getElementById('addBtn').addEventListener('click', addMemo);
 
 loadMemos();
