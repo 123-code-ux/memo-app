@@ -2,6 +2,7 @@ body {
   font-family: Helvetica, sans-serif;
   background-color: #fef6e4;
   margin: 0;
+  padding: 0;
 }
 
 .container {
@@ -31,6 +32,11 @@ input, textarea {
   border: 1px solid #ccc;
 }
 
+textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
 button {
   width: 100%;
   padding: 10px;
@@ -38,6 +44,8 @@ button {
   border-radius: 8px;
   background: #ff7f50;
   color: white;
+  font-size: 1rem;
+  cursor: pointer;
 }
 
 ul {
@@ -46,32 +54,28 @@ ul {
   margin-top: 16px;
 }
 
-/* ===========================
-   ここが重要
-=========================== */
-
 .memo-item {
   display: flex;
-  align-items: flex-start !important; /* 強制 */
+  align-items: flex-start;  /* 上寄せ */
   background: #fff8f0;
   padding: 10px;
   margin-bottom: 8px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  word-break: break-word;
 }
 
 .memo-item input[type="checkbox"] {
-  margin: 2px 8px 0 0 !important;
+  display: inline-flex !important;
+  vertical-align: top !important;
+  margin-right: 8px !important;
   flex-shrink: 0 !important;
-  align-self: flex-start !important;
   line-height: 1 !important;
 }
 
-/* 内容が絶対にはみ出さない */
 .memo-content {
-  display: block;
-  flex: 1;
-  min-width: 0;
+  flex: 1;          /* 残り幅を使う */
+  min-width: 0;      /* 枠内に収める */
   word-break: break-word;
 }
 
@@ -87,4 +91,5 @@ ul {
   font-size: 0.75rem;
   color: #00a000;
   font-weight: bold;
+  margin-top: 2px;
 }
