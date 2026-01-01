@@ -1,81 +1,96 @@
 body {
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Helvetica', sans-serif;
+  background-color: #fef6e4;
+  color: #333;
   margin: 0;
   padding: 0;
-  background: #f9f9f9;
 }
 
 .container {
-  max-width: 500px;
+  max-width: 480px;
   margin: auto;
-  padding: 20px;
+  padding: 16px;
 }
 
 h1 {
   text-align: center;
-  color: #333;
+  color: #ff7f50;
 }
 
 .subtitle {
   text-align: center;
-  color: #666;
   font-size: 0.9rem;
+  margin-bottom: 16px;
+  color: #666;
 }
 
 input, textarea {
   width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  border-radius: 8px;
+  margin-bottom: 8px;
+  padding: 8px;
   border: 1px solid #ccc;
+  border-radius: 8px;
   font-size: 1rem;
   box-sizing: border-box;
 }
 
+textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
 button {
   width: 100%;
-  padding: 12px;
+  padding: 10px;
+  font-size: 1rem;
   border: none;
-  border-radius: 8px;
-  background-color: #4CAF50;
+  background-color: #ff7f50;
   color: white;
-  font-size: 1.1rem;
+  border-radius: 8px;
   cursor: pointer;
-  margin-bottom: 20px;
+  transition: background 0.2s;
 }
 
 button:hover {
-  background-color: #45a049;
+  background-color: #ff6347;
 }
 
-#memoList {
+ul {
   list-style: none;
   padding: 0;
+  margin-top: 16px;
 }
 
 .memo-item {
-  background: white;
-  border-radius: 10px;
+  background: #fff8f0;
+  margin-bottom: 8px;
   padding: 10px;
-  margin-bottom: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.memo-header {
+  border-radius: 8px;
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 5px;
-  font-size: 0.85rem;
-  color: #555;
+  align-items: flex-start;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.memo-name {
-  font-weight: bold;
+.memo-item input[type="checkbox"] {
+  margin-right: 8px;
+  margin-top: 4px;
 }
 
 .memo-content {
-  font-size: 1rem;
-  color: #333;
-  word-wrap: break-word;
+  flex: 1;
+}
+
+.memo-date {
+  display: block;
+  font-size: 0.75rem;
+  color: #999;
+  margin-top: 4px;
+}
+
+.done-by {
+  display: block;
+  font-size: 0.75rem;
+  color: #00a000;
+  font-weight: bold;
+  margin-top: 2px;
 }
