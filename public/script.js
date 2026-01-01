@@ -6,21 +6,39 @@ async function loadMemos() {
   list.innerHTML = '';
 
   memos.forEach((memo, i) => {
-    const date = new Date(memo.createdAt);
-    const dateStr = !isNaN(date) ? date.toLocaleString('ja-JP') : '';
+    const li = document.createElement('li');
+    li.className = 'memo-item';
+    li.style.opacity = memo.done ? '0.6' : '1';
 
-    const div = document.createElement('div');
-    div.className = 'memo-row';
-    div.innerHTML = `
-      <input type="checkbox" ${memo.done ? 'checked' : ''} onchange="toggleDone(${i})">
-      <div class="memo-content">
-        <span class="memo-name">${memo.name}</span>：${memo.content}
-        <span class="memo-date">${dateStr}</span>
-        ${memo.done ? `<span class="done-by">(完了 by ${memo.doneBy})</span>` : ''}
-        <button onclick="addReaction(${i})">👍 ${memo.reactions || 0}</button>
-      </div>
-    `;
-    list.appendChild(div);
+    const contentSpan = document.createElement('span');
+    contentSpan.innerHTML = `<strong>${memo.name}</strong>：${memo.content}
+      <span class="memo-date">${new Date(memo.createdAt).toLocaleString('ja-JP')}</span>
+      ${memo.done ? `<span class="done-by">(完了 by ${memo.doneBy})</span>` : ''}`;
+
+    // ボタン類
+    const actionDiv = document.createElement('div');
+    actionDiv.className = 'action-buttons';
+
+    const doneBtn = document.createElement('button');
+    doneBtn.textContent = memo.done ? '未完了に戻す' : '完了';
+    doneBtn.addEventListener('click', () => toggleDone(i));
+
+    const likeBtn = document.createElement('button');
+    likeBtn.textContent = `いいね (${memo.likes || 0})`;
+    likeBtn.addEventListener('click', () => addLike(i));
+
+    const delBtn = document.createElement('button');
+    delBtn.textContent = '削除';
+    delBtn.addEventListener('click', () => deleteMemo(i));
+
+    actionDiv.appendChild(doneBtn);
+    actionDiv.appendChild(likeBtn);
+    actionDiv.appendChild(delBtn);
+
+    li.appendChild(contentSpan);
+    li.appendChild(actionDiv);
+
+    list.appendChild(li);
   });
 }
 
@@ -49,8 +67,17 @@ async function toggleDone(index) {
   loadMemos();
 }
 
-async function addReaction(index) {
-  await fetch('/api/memos/react', {
+async function addLike(index) {
+  await fetch('/api/memos/like', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ index })
+  });
+  loadMemos();
+}
+
+async function deleteMemo(index) {
+  await fetch('/api/memos/delete', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ index })
