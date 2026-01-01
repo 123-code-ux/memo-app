@@ -7,20 +7,36 @@ body {
 
 .container {
   max-width: 480px;
+  width: 95%;
   margin: auto;
   padding: 16px;
+}
+
+h1 {
+  text-align: center;
+  color: #ff7f50;
 }
 
 input, textarea, button {
   width: 100%;
   margin-bottom: 8px;
   padding: 8px;
+  font-size: 1rem;
   box-sizing: border-box;
 }
 
-textarea { min-height: 60px; }
+textarea {
+  min-height: 60px;
+  resize: vertical;
+}
 
-button { cursor: pointer; background-color: #ff7f50; color: #fff; border: none; border-radius: 6px; }
+button {
+  cursor: pointer;
+  background-color: #ff7f50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+}
 
 #memoList {
   margin-top: 16px;
@@ -28,7 +44,7 @@ button { cursor: pointer; background-color: #ff7f50; color: #fff; border: none; 
 
 .memo-row {
   display: grid;
-  grid-template-columns: 30px 1fr;
+  grid-template-columns: 40px 1fr;
   padding: 8px;
   background: #fff;
   margin-bottom: 8px;
@@ -51,3 +67,17 @@ button { cursor: pointer; background-color: #ff7f50; color: #fff; border: none; 
 .memo-date { font-size: 0.75rem; color: #999; display: block; }
 
 .done-by { font-size: 0.75rem; color: green; display: block; }
+
+/* スマホ用微調整 */
+@media (max-width: 360px) {
+  .container {
+    padding: 8px;
+  }
+  input, textarea, button {
+    font-size: 0.9rem;
+  }
+  .memo-row {
+    grid-template-columns: 35px 1fr;
+    font-size: 0.9rem;
+  }
+}
