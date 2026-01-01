@@ -1,3 +1,4 @@
+/* 基本設定 */
 body {
   font-family: 'Helvetica', sans-serif;
   background-color: #fef6e4;
@@ -24,6 +25,7 @@ h1 {
   color: #666;
 }
 
+/* 入力欄 */
 input, textarea {
   width: 100%;
   margin-bottom: 8px;
@@ -39,6 +41,7 @@ textarea {
   min-height: 60px;
 }
 
+/* ボタン */
 button {
   width: 100%;
   padding: 10px;
@@ -55,12 +58,14 @@ button:hover {
   background-color: #ff6347;
 }
 
+/* メモリスト */
 ul {
   list-style: none;
   padding: 0;
   margin-top: 16px;
 }
 
+/* メモ1件 */
 .memo-item {
   background: #fff8f0;
   margin-bottom: 8px;
@@ -69,17 +74,22 @@ ul {
   display: flex;
   align-items: flex-start;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  word-break: break-word; /* 長文が飛び出さないように */
 }
 
 .memo-item input[type="checkbox"] {
   margin-right: 8px;
   margin-top: 4px;
+  flex-shrink: 0; /* チェックボックスが縮まないように */
 }
 
+/* メモ内容 */
 .memo-content {
   flex: 1;
+  word-break: break-word; /* 長文を折り返す */
 }
 
+/* 日付 */
 .memo-date {
   display: block;
   font-size: 0.75rem;
@@ -87,10 +97,27 @@ ul {
   margin-top: 4px;
 }
 
+/* 完了表示 */
 .done-by {
   display: block;
   font-size: 0.75rem;
   color: #00a000;
   font-weight: bold;
   margin-top: 2px;
+}
+
+/* スマホでの表示調整 */
+@media (max-width: 480px) {
+  .container {
+    padding: 12px;
+  }
+
+  input, textarea, button {
+    font-size: 0.95rem;
+    padding: 8px;
+  }
+
+  .memo-date, .done-by {
+    font-size: 0.7rem;
+  }
 }
