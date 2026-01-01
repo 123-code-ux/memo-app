@@ -23,7 +23,8 @@ app.post('/api/memos', (req, res) => {
 
   memos.unshift({
     name: name || '匿名',
-    content
+    content,
+    date: new Date().toISOString() // 日付を付与
   });
 
   res.json({ status: 'ok' });

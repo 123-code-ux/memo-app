@@ -6,16 +6,21 @@ async function loadMemos() {
   list.innerHTML = '';
 
   memos.forEach(memo => {
+    const date = new Date(memo.date);
     const li = document.createElement('li');
-    const date = new Date(memo.date).toLocaleString('ja-JP', {
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-    li.innerHTML = `<span class="memo-name">${memo.name}</span>
-                    <span class="memo-date">${date}</span>
-                    <p class="memo-content">${memo.content}</p>`;
+    li.className = 'memo-item';
+    li.innerHTML = `
+      <div class="memo-header">
+        <span class="memo-name">${memo.name}</span>
+        <span class="memo-date">${date.toLocaleString('ja-JP', {
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit'
+        })}</span>
+      </div>
+      <p class="memo-content">${memo.content}</p>
+    `;
     list.appendChild(li);
   });
 }
@@ -32,11 +37,7 @@ async function addMemo() {
   await fetch('/api/memos', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      name: name || '匿名',
-      content,
-      date: new Date().toISOString()
-    })
+    body: JSON.stringify({ name: name || '匿名', content })
   });
 
   document.getElementById('memoInput').value = '';
