@@ -1,41 +1,44 @@
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
+const path = require('path');
 
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 const db = new sqlite3.Database('./memo.db');
 
+// テーブル作成
 db.serialize(() => {
   db.run(`
     CREATE TABLE IF NOT EXISTS memos (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      author TEXT,
-      content TEXT,
-      created_at TEXT
+      content TEXT
     )
   `);
 });
 
+// メモ一覧取得
 app.get('/api/memos', (req, res) => {
-  db.all(
-    'SELECT * FROM memos ORDER BY id DESC',
-    (err, rows) => res.json(rows)
-  );
+  db.all('SELECT * FROM memos ORDER BY id DESC', (err, rows) => {
+    res.json(rows);
+  });
 });
 
+// メモ追加
 app.post('/api/memos', (req, res) => {
-  const { author, content } = req.body;
-  const date = new Date().toLocaleString('ja-JP');
+  const content = req.body.content;
+  if (!content) return res.json({ status: 'ng' });
 
   db.run(
-    'INSERT INTO memos (author, content, created_at) VALUES (?, ?, ?)',
-    [author, content, date],
-    () => res.json({ ok: true })
+    'INSERT INTO memos (content) VALUES (?)',
+    [content],
+    () => res.json({ status: 'ok' })
   );
 });
 
-app.listen(3000, () => {
-  console.log('Server running');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on ${PORT}`);
 });
