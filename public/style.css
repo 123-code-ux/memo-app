@@ -9,6 +9,8 @@ body {
   max-width: 480px;
   margin: auto;
   padding: 16px;
+  box-sizing: border-box;
+  overflow-x: hidden; /* 横はみ出し防止 */
 }
 
 h1 {
@@ -52,6 +54,8 @@ ul {
   list-style: none;
   padding: 0;
   margin-top: 16px;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .memo-item {
@@ -62,11 +66,12 @@ ul {
   margin-bottom: 8px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  word-break: break-word;
 
-  width: 100%;                  /* 親幅に収める */
-  box-sizing: border-box;       /* padding を含めて幅計算 */
-  overflow-wrap: break-word;    /* 長文も折り返し */
+  flex: 1 1 auto;
+  max-width: 100%;               /* 親幅内に収める */
+  box-sizing: border-box;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .memo-item input[type="checkbox"] {
@@ -76,9 +81,9 @@ ul {
 }
 
 .memo-content {
-  flex: 1;                     /* 残り幅を使う */
-  min-width: 0;                 /* 枠内で縮む */
-  word-break: break-word;       /* 長文折り返し */
+  flex: 1 1 auto;
+  min-width: 0;                  /* flex 内で縮む */
+  word-break: break-word;
   overflow-wrap: break-word;
 }
 
