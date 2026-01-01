@@ -56,27 +56,30 @@ ul {
 
 .memo-item {
   display: flex;
-  align-items: flex-start;  /* 上寄せ */
+  align-items: flex-start;      /* チェックボックス上寄せ */
   background: #fff8f0;
   padding: 10px;
   margin-bottom: 8px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   word-break: break-word;
+
+  width: 100%;                  /* 親幅に収める */
+  box-sizing: border-box;       /* padding を含めて幅計算 */
+  overflow-wrap: break-word;    /* 長文も折り返し */
 }
 
 .memo-item input[type="checkbox"] {
-  display: inline-flex !important;
-  vertical-align: top !important;
-  margin-right: 8px !important;
-  flex-shrink: 0 !important;
-  line-height: 1 !important;
+  align-self: flex-start;       /* 左上固定 */
+  margin-right: 8px;
+  flex-shrink: 0;
 }
 
 .memo-content {
-  flex: 1;          /* 残り幅を使う */
-  min-width: 0;      /* 枠内に収める */
-  word-break: break-word;
+  flex: 1;                     /* 残り幅を使う */
+  min-width: 0;                 /* 枠内で縮む */
+  word-break: break-word;       /* 長文折り返し */
+  overflow-wrap: break-word;
 }
 
 .memo-date {
