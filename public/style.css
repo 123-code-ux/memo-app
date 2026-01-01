@@ -76,19 +76,20 @@ ul {
   display: flex;
   align-items: flex-start; /* 上寄せ */
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  word-break: break-word;   /* 長文折り返し */
+  word-break: break-word;
   word-wrap: break-word;
 }
 
 .memo-item input[type="checkbox"] {
-  margin-right: 8px;
-  margin-top: 4px;          /* 上寄せ */
-  flex-shrink: 0;
+  margin-right: 8px;   
+  margin-top: 4px;    
+  flex-shrink: 0;      
+  align-self: flex-start; /* 左上に固定 */
 }
 
 .memo-content {
   flex: 1;
-  min-width: 0;             /* 幅超過防止 */
+  min-width: 0;        /* 幅超過防止 */
   word-break: break-word;
 }
 
