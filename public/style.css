@@ -1,13 +1,99 @@
-#quiz {
+/* ===== Reset & Base ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #f6f9fc, #e0f7fa);
+  min-height: 100vh;
+  padding: 20px;
   display: flex;
-  justify-content: space-around;
-  margin: 20px;
+  flex-direction: column;
+  align-items: center;
 }
 
-#quiz img {
-  width: 200px;
-  cursor: pointer;
-  border: 2px solid black;
+h1 {
+  color: #00796b;
+  margin-bottom: 5px;
+  font-size: 2rem;
+}
+
+.subtitle {
+  color: #004d40;
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+}
+
+/* ===== Inputs & Button ===== */
+input, textarea {
+  width: 300px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 2px solid #00796b;
   border-radius: 8px;
+  font-size: 1rem;
 }
 
+textarea {
+  height: 80px;
+  resize: vertical;
+}
+
+button#addBtn {
+  background-color: #00796b;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+button#addBtn:hover {
+  background-color: #004d40;
+  transform: translateY(-2px);
+}
+
+/* ===== Memo List ===== */
+ul#memoList {
+  list-style: none;
+  width: 100%;
+  max-width: 400px;
+  margin-top: 20px;
+}
+
+ul#memoList li {
+  background-color: white;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border-left: 5px solid #00796b;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  font-size: 1rem;
+  word-wrap: break-word;
+}
+
+ul#memoList li span.name {
+  font-weight: bold;
+  color: #004d40;
+  margin-right: 5px;
+}
+
+ul#memoList li span.content {
+  color: #333;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 480px) {
+  input, textarea, button#addBtn {
+    width: 90%;
+  }
+
+  ul#memoList {
+    max-width: 90%;
+  }
+}

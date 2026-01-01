@@ -7,7 +7,7 @@ async function loadMemos() {
 
   memos.forEach(memo => {
     const li = document.createElement('li');
-    li.textContent = `${memo.name}：${memo.content}`;
+    li.innerHTML = `${memo.name}：${memo.content}`;
     list.appendChild(li);
   });
 }
